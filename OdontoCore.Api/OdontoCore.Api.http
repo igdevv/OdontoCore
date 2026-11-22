@@ -1,0 +1,6 @@
+@OdontoCore.Api_HostAddress = http://localhost:5168
+
+GET {{OdontoCore.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
