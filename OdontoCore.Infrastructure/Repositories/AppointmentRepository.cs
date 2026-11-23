@@ -32,5 +32,23 @@ namespace OdontoCore.Infrastructure.Repositories
                     appointment.StartsAt < endsAt &&
                     appointment.EndsAt > startsAt, ct);
         }
+
+        public async Task<Appointment?> GetByIdAsync(Guid id, CancellationToken ct = default)
+        {
+            return await dbContext.Appointments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id, ct);
+        }
+
+        public async Task<IReadOnlyList<Appointment>> GetScheduleAsync(Guid dentistId, DateTime startsAtUtc, DateTime
+            endsAtUtc, CancellationToken ct = default)
+        {
+            return await dbContext.Appointments
+                .AsNoTracking()
+                .Where(a => a.DentistId == dentistId && a.StartsAt >= startsAtUtc &&
+                a.StartsAt < endsAtUtc)
+                .OrderBy(a => a.StartsAt)
+                .ToListAsync();
+        }
     }
 }

@@ -1,3 +1,6 @@
+using OdontoCore.Api.ExceptionHandling;
+using OdontoCore.Application.Appointments.GetAppointmentById;
+using OdontoCore.Application.Appointments.GetDentistSchedule;
 using OdontoCore.Application.Appointments.ScheduleAppointment;
 using OdontoCore.Infrastructure;
 using OdontoCore.Infrastructure.Persistence;
@@ -18,8 +21,15 @@ builder.Services.AddInfrastructure(connectionString);
 
 builder.Services.AddScoped<ScheduleAppointmentHandler>();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+builder.Services.AddScoped<GetAppointmentByIdHandler>();
+builder.Services.AddScoped<GetDentistScheduleHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
@@ -29,7 +39,6 @@ if (app.Environment.IsDevelopment())
 
     await DevelopmentDataSeeder.SeedAsync(context);
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

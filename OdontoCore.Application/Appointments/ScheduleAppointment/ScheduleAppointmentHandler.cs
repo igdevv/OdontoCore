@@ -1,4 +1,5 @@
 ﻿using OdontoCore.Application.Abstractions;
+using OdontoCore.Application.Exceptions;
 using OdontoCore.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -33,21 +34,21 @@ namespace OdontoCore.Application.Appointments.ScheduleAppointment
 
             if (patient is null || !patient.IsActive)
             {
-                throw new InvalidOperationException("Patient does not exist or is inactive.");
+                throw new ResourceNotFoundException("Patient");
             }
 
             Dentist? dentist = await dentistRepository.GetByIdAsync(command.DentistId, ct);
 
             if (dentist is null || !dentist.IsActive)
             {
-                throw new InvalidOperationException("Dentist does not exist or is inactive.");
+                throw new ResourceNotFoundException("Dentist");
             }
 
             DentalService? dentalService = await dentalServiceRepository.GetByIdAsync(command.DentalServiceId, ct);
 
             if (dentalService is null || !dentalService.IsActive)
             {
-                throw new InvalidOperationException("Dental service does not exist or is inactive.");
+                throw new ResourceNotFoundException("Dental service");
             }
 
             if (command.StartsAt.Kind != DateTimeKind.Utc)
@@ -62,7 +63,7 @@ namespace OdontoCore.Application.Appointments.ScheduleAppointment
 
             if (hasConflict)
             {
-                throw new InvalidOperationException("Dentist already has an appointment at this time.");
+                throw new AppointmentConflictException();
             }
 
             Appointment appointment = new Appointment(

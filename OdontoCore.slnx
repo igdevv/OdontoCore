@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="OdontoCore.Api/OdontoCore.Api.csproj" Id="62610e4a-3654-4df5-907f-ff2a6a748403" />
   <Project Path="OdontoCore.Application/OdontoCore.Application.csproj" />
   <Project Path="OdontoCore.Domain/OdontoCore.Domain.csproj" />
